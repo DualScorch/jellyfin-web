@@ -19,18 +19,15 @@ import Dashboard from '../../../scripts/clientUtils';
         }
 
         if (result.Action == 'PinCode') {
-            let msg = globalize.translate('MessageForgotPasswordFileCreated');
+            let msg = "Check your email for reset link";
             msg += '<br/>';
             msg += '<br/>';
-            msg += 'Enter PIN here to finish Password Reset<br/>';
-            msg += '<br/>';
-            msg += result.PinFile;
-            msg += '<br/>';
+            msg += "Press button below to continue.";
             return void Dashboard.alert({
                 message: msg,
                 title: globalize.translate('ButtonForgotPassword'),
                 callback: function () {
-                    Dashboard.navigate('forgotpasswordpin.html');
+                    Dashboard.navigate('login.html');
                 }
             });
         }
