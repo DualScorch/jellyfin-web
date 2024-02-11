@@ -140,7 +140,7 @@
   ],
   "scripts": {
     "start": "npm run serve",
-    "serve": "webpack serve --config webpack.dev.js",
+    "serve": "webpack serve --config webpack.dev.js --host 0.0.0.0",
     "build:analyze": "cross-env NODE_ENV=\"production\" webpack --config webpack.analyze.js",
     "build:development": "cross-env NODE_OPTIONS=\"--max_old_space_size=6144\" webpack --config webpack.dev.js",
     "build:production": "cross-env NODE_ENV=\"production\" NODE_OPTIONS=\"--max_old_space_size=6144\" webpack --config webpack.prod.js",
