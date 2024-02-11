@@ -285,6 +285,7 @@ import { appRouter } from '../../../components/appRouter';
                 elem.classList.remove('videoOsdBottom-hidden');
 
                 focusElement ||= elem.querySelector('.btnPause');
+                setSkipIntroVisibility();
 
                 if (!layoutManager.mobile) {
                     _focus(focusElement);
@@ -306,6 +307,7 @@ import { appRouter } from '../../../components/appRouter';
                 });
                 currentVisibleMenu = null;
                 toggleSubtitleSync('hide');
+                setSkipIntroVisibility();
 
                 // Firefox does not blur by itself
                 if (document.activeElement) {
@@ -462,7 +464,34 @@ import { appRouter } from '../../../components/appRouter';
                 updatePlaylist();
                 enableStopOnBack(true);
                 updatePlaybackRate(player);
+                getIntroTimestamps(state.NowPlayingItem);
             }
+        }
+
+        function getIntroTimestamps(item) {
+            const apiClient = ServerConnections.getApiClient(item);
+            const address = apiClient.serverAddress();
+
+            const url = `${address}/Episode/${item.Id}/IntroTimestamps`;
+            const reqInit = {
+                headers: {
+                    "Authorization": `MediaBrowser Token=${apiClient.accessToken()}`
+                }
+            };
+
+            fetch(url, reqInit).then(r => {
+                if (!r.ok) {
+                    return;
+                }
+
+                return r.json();
+            }).then(intro => {
+                tvIntro = intro;
+            });
+        }
+
+        function skipIntro() {
+            playbackManager.seekMs(tvIntro.IntroEnd * 1000);
         }
 
         function onPlayPauseStateChanged() {
@@ -582,8 +611,28 @@ import { appRouter } from '../../../components/appRouter';
                     const item = currentItem;
                     refreshProgramInfoIfNeeded(player, item);
                     showComingUpNextIfNeeded(player, item, currentTime, currentRuntimeTicks);
+
+                    setSkipIntroVisibility();
                 }
             }
+        }
+
+        function setSkipIntroVisibility() {
+            if (!tvIntro?.Valid) {
+                return;
+            }
+
+            const player = this
+            const seconds = playbackManager.currentTime(player) / 1000;
+            const skipIntro = document.querySelector(".skipIntro");
+
+            // If the skip prompt should be shown, show it.
+            if ((seconds >= tvIntro.ShowSkipPromptAt && seconds < tvIntro.HideSkipPromptAt) || (seconds >= tvIntro.IntroStart && seconds < tvIntro.IntroEnd && currentVisibleMenu === 'osd')) {
+                skipIntro.classList.remove("hide");
+                return;
+            }
+
+            skipIntro.classList.add("hide");
         }
 
         function showComingUpNextIfNeeded(player, currentItem, currentTimeTicks, runtimeTicks) {
@@ -1318,6 +1367,7 @@ import { appRouter } from '../../../components/appRouter';
         let programEndDateMs = 0;
         let playbackStartTimeTicks = 0;
         let subtitleSyncOverlay;
+        let tvIntro;
         const nowPlayingVolumeSlider = view.querySelector('.osdVolumeSlider');
         const nowPlayingVolumeSliderContainer = view.querySelector('.osdVolumeSliderContainer');
         const nowPlayingPositionSlider = view.querySelector('.osdPositionSlider');
@@ -1467,6 +1517,10 @@ import { appRouter } from '../../../components/appRouter';
         let lastPointerDown = 0;
         /* eslint-disable-next-line compat/compat */
         dom.addEventListener(view, window.PointerEvent ? 'pointerdown' : 'click', function (e) {
+            // If the user clicked the skip intro button, don't pause the video. Fixes ConfusedPolarBear/intro-skipper#44.
+            if (dom.parentWithClass(e.target, ['btnSkipIntro'])) {
+                return;
+            }
             if (dom.parentWithClass(e.target, ['videoOsdBottom', 'upNextContainer'])) {
                 return void showOsd();
             }
@@ -1594,6 +1648,7 @@ import { appRouter } from '../../../components/appRouter';
         });
         view.querySelector('.btnAudio').addEventListener('click', showAudioTrackSelection);
         view.querySelector('.btnSubtitles').addEventListener('click', showSubtitleTrackSelection);
+        view.querySelector('.btnSkipIntro').addEventListener('click', skipIntro);
 
         // Register to SyncPlay playback events and show big animated icon
         const showIcon = (action) => {
