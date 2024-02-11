@@ -19,7 +19,7 @@ function processForgotPasswordResult(result) {
     }
 
     if (result.Action == 'PinCode') {
-        let msg = globalize.translate('MessageForgotPasswordFileCreated');
+        let msg = "Check your email for reset link";
         msg += '<br/>';
         msg += '<br/>';
         msg += 'Enter PIN here to finish Password Reset<br/>';

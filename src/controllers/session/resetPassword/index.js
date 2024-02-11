@@ -3,10 +3,13 @@ import Dashboard from '../../../utils/dashboard';
 
 function processForgotPasswordResult(result) {
     if (result.Success) {
-        let msg = globalize.translate('MessagePasswordResetForUsers');
+        let msg = "Your password has been set to the reset PIN.";
         msg += '<br/>';
         msg += '<br/>';
-        msg += result.UsersReset.join('<br/>');
+        msg += "Change your password afterwards."
+        msg += '<br/>';
+        msg += '<br/>';
+        msg += "Press button below to continue."
         Dashboard.alert({
             message: msg,
             title: globalize.translate('HeaderPasswordReset'),
