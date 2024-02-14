@@ -131,11 +131,20 @@ a[data-role=button] {
 }
 
 #btnResetPassword,
+.btnCreateAccount,
 .btnForgotPassword,
 .btnCancel,
 .button-cancel {
     background: rgba(0, 0, 0, 0.5);
     color: rgba(255, 255, 255, 0.87);
+}
+
+.customTextButton {
+    transition: all 200ms ease 0ms !important;
+  }
+  
+.customTextButton:hover {
+color: white !important;
 }
 
 .alphaPickerButton {

@@ -238,6 +238,9 @@ import './login.scss';
         view.querySelector('.btnForgotPassword').addEventListener('click', function () {
             Dashboard.navigate('forgotpassword.html');
         });
+        view.querySelector('.btnCreateAccount').addEventListener('click', function () {
+            Dashboard.navigate('createaccount.html');
+        });
         view.querySelector('.btnCancel').addEventListener('click', showVisualForm);
         view.querySelector('.btnQuick').addEventListener('click', function () {
             const apiClient = getApiClient();

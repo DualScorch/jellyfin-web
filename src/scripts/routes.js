@@ -71,6 +71,16 @@ import { appRouter } from '../components/appRouter';
     });
 
     defineRoute({
+        // route is createAccount
+        alias: '/createaccount.html',
+        path: 'session/createAccount/index.html',
+        autoFocus: false,
+        anonymous: true,
+        startup: true,
+        controller: 'session/createAccount/index'
+    });
+
+    defineRoute({
         alias: '/mypreferencesmenu.html',
         path: 'user/menu/index.html',
         autoFocus: false,
