@@ -12,7 +12,7 @@
                 <input is="emby-input" id="txtManualPassword" type="password" label="${LabelPassword}" autocomplete="current-password" />
             </div>
 
-            <label class="checkboxContainer">
+            <label class="checkboxContainer" style="margin-bottom: 1rem;">
                 <input is="emby-checkbox" type="checkbox" class="chkRememberLogin" checked />
                 <span>${RememberMe}</span>
             </label>
@@ -38,21 +38,39 @@
                 <span>${ButtonManualLogin}</span>
             </button>
 
-            <a href="https://jellyfin.nu/invite" target="_blank" style="text-decoration: none;">
+            <!-- <a href="https://jellyfin.nu/invite" target="_blank" style="text-decoration: none;">
                 <button is="emby-button" type="button" class="raised cancel block btnManual">
                     <span>Skapa konto</span>
                 </button>
-            </a>
+            </a> -->
 
             <button is="emby-button" type="button" class="raised cancel block btnQuick hide">
                 <span>${ButtonUseQuickConnect}</span>
             </button>
 
-            <button is="emby-button" type="button" class="raised cancel block btnForgotPassword">
+            <div class="flex" style="justify-content: space-between; gap: 1rem;">
+                <div is="emby-button" type="button" style="text-decoration-line: underline; cursor: pointer;" class="cancel block customTextButton btnForgotPassword">
+                    <span>${ButtonForgotPassword}</span>
+                </div>
+
+                <div is="emby-button" type="button" style="text-decoration-line: underline; cursor: pointer;" class="cancel block customTextButton btnCreateAccount">
+                    <span >Create Account</span> 
+                </div>
+            </div>
+
+
+
+            <!-- <button is="emby-button" type="button" class="raised cancel block btnForgotPassword">
                 <span>${ButtonForgotPassword}</span>
             </button>
 
-            <button is="emby-button" type="button" class="raised block btnSelectServer">
+
+
+            <button is="emby-button" type="button" class="raised cancel block btnCreateAccount">
+                <span>Create Account</span>
+            </button> -->
+
+            <button is="emby-button" type="button" class="raised block hide btnSelectServer">
                 <span>${ButtonChangeServer}</span>
             </button>
 
