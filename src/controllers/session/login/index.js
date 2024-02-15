@@ -239,7 +239,13 @@ import './login.scss';
             Dashboard.navigate('forgotpassword.html');
         });
         view.querySelector('.btnCreateAccount').addEventListener('click', function () {
-            Dashboard.navigate('createaccount.html');
+            // eslint-disable-next-line compat/compat
+            const code = new URL(document.location).searchParams.get('code');
+            if (code) {
+                Dashboard.navigate('createaccount.html?code=' + code);
+            } else {
+                Dashboard.navigate('createaccount.html');
+            }
         });
         view.querySelector('.btnCancel').addEventListener('click', showVisualForm);
         view.querySelector('.btnQuick').addEventListener('click', function () {

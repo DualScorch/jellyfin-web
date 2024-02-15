@@ -72,7 +72,12 @@ class AppRouter {
     }
 
     showLocalLogin(serverId) {
-        Dashboard.navigate('login.html?serverid=' + serverId);
+        const code = this.param('code');
+        if (code) {
+            Dashboard.navigate('login.html?serverid=' + serverId + '&code=' + code);
+        } else {
+            Dashboard.navigate('login.html?serverid=' + serverId);
+        }
     }
 
     showVideoOsd() {

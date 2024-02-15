@@ -1,5 +1,6 @@
 import Dashboard from '../../../scripts/clientUtils';
 import loading from '../../../components/loading/loading';
+import { appRouter } from '../../../components/appRouter';
 
 /* eslint-disable indent */
 
@@ -83,6 +84,14 @@ import loading from '../../../components/loading/loading';
         }
 
         view.querySelector('form').addEventListener('submit', onSubmit);
+
+        // eslint-disable-next-line compat/compat
+        const params = new URL(document.location).searchParams;
+        const code = params.get('code');
+
+        if (code) {
+            view.querySelector('#code').value = code;
+        }
     }
 
 /* eslint-enable indent */
