@@ -30,8 +30,13 @@ import loading from '../../../components/loading/loading';
 
             return false;
         }
-
+//
         view.querySelector('form').addEventListener('submit', onSubmit);
+
+        view.querySelector('.btnForgotUser').addEventListener('click', function (e) {
+            e.preventDefault();
+            Dashboard.navigate('forgotuser.html');
+        });
     }
 
 /* eslint-enable indent */

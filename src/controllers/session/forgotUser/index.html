@@ -2,16 +2,20 @@
     <div class="padded-left padded-right padded-bottom-page">
         <form class="forgotPasswordForm" style="text-align: center; margin: 0 auto;">
             <div style="text-align: left;">
-                <h1>${ButtonForgotPassword}</h1>
+                <h1>Forgot Username/Email</h1>
 
                 <div class="inputContainer">
-                    <input is="emby-input" type="text" id="txtName" label="Email/${LabelUser}" autocomplete="off"/>
-                    <div class="fieldDescription">Enter your email or username.</div>
+                    <input is="emby-input" type="text" id="info" label="Last remembered" autocomplete="off"/>
+                    <div class="fieldDescription">Enter something your remember, username or email</div>
+                </div>
+
+                <div class="inputContainer">
+                    <input is="emby-input" type="text" id="email" label="Email" autocomplete="off"/>
+                    <div class="fieldDescription">Enter the email to contact you on</div>
                 </div>
 
                 <div>
-                    
-                    
+
                     <button is="emby-button" type="submit" class="raised submit block">
                         <span>${ButtonSubmit}</span>
                     </button>
@@ -21,9 +25,6 @@
                     </button>
                 </div>
             </div>
-            <button is="emby-button" style="margin-top: 2rem;" class="raised block readOnlyContent btnForgotUser">
-                <span>I don't know my username or email</span>
-            </button>
         </form>
     </div>
 </div>

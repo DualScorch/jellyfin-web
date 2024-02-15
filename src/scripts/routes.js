@@ -62,6 +62,14 @@ import { appRouter } from '../components/appRouter';
     });
 
     defineRoute({
+        alias: '/forgotuser.html',
+        path: 'session/forgotUser/index.html',
+        anonymous: true,
+        startup: true,
+        controller: 'session/forgotUser/index'
+    });
+
+    defineRoute({
         alias: '/forgotpasswordpin.html',
         path: 'session/resetPassword/index.html',
         autoFocus: false,
