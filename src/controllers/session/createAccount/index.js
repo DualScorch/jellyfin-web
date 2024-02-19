@@ -48,7 +48,6 @@ import { appRouter } from '../../../components/appRouter';
             const password = view.querySelector('#password').value;
             const code = view.querySelector('#code').value;
 
-            console.log('fetching');
             loading.show();
             fetch('https://utils.jellyfin.nu/api/create', {
                 method: 'POST',
@@ -84,6 +83,9 @@ import { appRouter } from '../../../components/appRouter';
         }
 
         view.querySelector('form').addEventListener('submit', onSubmit);
+        view.querySelector('.btnCancel').addEventListener('click', () => {
+            Dashboard.navigate('login.html');
+        });
 
         // eslint-disable-next-line compat/compat
         const params = new URL(document.location).searchParams;
