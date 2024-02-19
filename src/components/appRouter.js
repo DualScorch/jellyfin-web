@@ -74,7 +74,8 @@ class AppRouter {
     showLocalLogin(serverId) {
         const code = this.param('code');
         if (code) {
-            Dashboard.navigate('login.html?serverid=' + serverId + '&code=' + code);
+            // Dashboard.navigate('login.html?serverid=' + serverId + '&code=' + code);
+            Dashboard.navigate('createaccount.html?code=' + code);
         } else {
             Dashboard.navigate('login.html?serverid=' + serverId);
         }
