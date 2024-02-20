@@ -202,13 +202,13 @@ import toast from '../toast/toast';
                     <div class="cardPadder
                     cardPadder-overflowBackdrop lazy-hidden-children">
                       
-                        <button data-action="link" sty class="cardImageContainer coveredImage cardContent itemAction " aria-label="Invite Codes" style="background-image: url('https://utils.jellyfin.nu/api/image?userId=${userId}&tvLayout=${layoutManager.tv}'); opacity: 1; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 4px; color: #fff;"></button>
+                        <button data-action="link" sty class="cardImageContainer coveredImage cardContent itemAction " aria-label="Invite Code" style="background-image: url('https://utils.jellyfin.nu/api/image?userId=${userId}&tvLayout=${layoutManager.tv}'); opacity: 1; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 4px; color: #fff;"></button>
                         <div class="cardOverlayContainer itemAction" data-action="link">
                             <div class="cardOverlayButton-tr flex">Hej</div>
                         </div>
                     </div>
                     <div class="cardText cardTextCentered cardText-first">
-                        <button type="button" class="itemAction textActionButton" title="Invite Codes" data-action="link" style="color: #fff;">Invite Codes</button>
+                        <button type="button" class="itemAction textActionButton" title="Invite Code" data-action="link" style="color: #fff;">Invite Code</button>
                     </div>
                 </div>
             </div>
@@ -274,7 +274,7 @@ import toast from '../toast/toast';
 
                 inviteCard.addEventListener('click', () => {
                     navigator.clipboard.writeText(
-                        `https://${window.location.hostname}?code=${data.code}`
+                        `https://${window.location.hostname}/web/index.html?code=${data.code}`
                          ).then(() => {
                     toast('Copied invite link to clipboard');
                     }
