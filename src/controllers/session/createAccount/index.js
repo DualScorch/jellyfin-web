@@ -63,7 +63,7 @@ import { appRouter } from '../../../components/appRouter';
                 loading.hide();
                 if (response.status === 200) {
                     Dashboard.alert({
-                        message: 'Before you can log in, you need to verify your email address. Please check your email for a verification link. It can take up to 10 minutes to arrive.',
+                        message: 'Before you can log in, you need to verify your email address. Please check your email for a verification link. It can take up to 10 minutes to arrive. <br><br> Check your spam folder!',
                         title: 'Success',
                         callback: () => {
                             Dashboard.navigate('login.html');
