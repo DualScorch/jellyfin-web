@@ -72,10 +72,12 @@ class AppRouter {
     }
 
     showLocalLogin(serverId) {
+        // eslint-disable-next-line compat/compat
         const code = this.param('code');
         if (code) {
             // Dashboard.navigate('login.html?serverid=' + serverId + '&code=' + code);
-            Dashboard.navigate('createaccount.html?code=' + code);
+            window.history.pushState({}, 'Login', '/web/index.html?serverid=' + serverId + '&code=' + code);
+            Dashboard.navigate('createaccount.html?code=' + code + '&serverid=' + serverId);
         } else {
             Dashboard.navigate('login.html?serverid=' + serverId);
         }

@@ -80,7 +80,11 @@ import '../assets/css/flexstyles.scss';
     }
 
     function onBackClick() {
-        appRouter.back();
+        if (window.location.href.includes('createaccount.html')) {
+            Dashboard.navigate('login.html');
+        } else {
+            appRouter.back();
+        }
     }
 
     function retranslateUi() {
@@ -297,7 +301,7 @@ import '../assets/css/flexstyles.scss';
         // placeholder for custom menu links
         html += '<div class="customMenuOptions"></div>';
         // html +='<a is="emby-linkbutton" class="navMenuOption lnkMediaFolder" href="https://guide.jakobtor.casa?link=none" target="_blank"><i class="md-icon navMenuOptionIcon"><img width="26" src="https://github.com/sveltejs/branding/blob/master/svelte-logo.png?raw=true"></i><span class="navMenuOptionText">'+ globalize.translate('Guide') + "</span></a>";
-        html +='<a is="emby-linkbutton"  class="navMenuOption lnkMediaFolder" href="https://mer.jellyfin.nu" target="_blank"><i class="md-icon flex navMenuOptionIcon" style="margin-right: 24.284px;"><img style="width: 20.23px; height: 20px;" src="https://github.com/Fallenbagel/jellyseerr/blob/main/public/favicon-32x32.png?raw=true"></i><span class="navMenuOptionText">'+ globalize.translate('Requests') + "</span></a>";
+        html += '<a is="emby-linkbutton"  class="navMenuOption lnkMediaFolder" href="https://mer.jellyfin.nu" target="_blank"><i class="md-icon flex navMenuOptionIcon" style="margin-right: 24.284px;"><img style="width: 20.23px; height: 20px;" src="https://github.com/Fallenbagel/jellyseerr/blob/main/public/favicon-32x32.png?raw=true"></i><span class="navMenuOptionText">' + globalize.translate('Requests') + '</span></a>';
 
         // libraries are added here
         html += '<div class="libraryMenuOptions"></div>';
