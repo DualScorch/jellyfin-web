@@ -4,7 +4,59 @@ import '../elements/emby-tabs/emby-tabs';
 import '../elements/emby-button/emby-button';
 import '../elements/emby-scroller/emby-scroller';
 import { appRouter } from '../components/appRouter';
+import { TourGuideClient } from '../tourguide/Tour.ts';
+import '../tourguide/scss/tour.scss';
+import layoutManager from '../components/layoutManager';
 
+const runTour = () => {
+    const tourCompleted = localStorage.getItem('tourCompleted');
+    const hostname = window.location.hostname;
+
+    if (tourCompleted === 'true' || hostname !== 'jellyfin.nu' || layoutManager.tv === true) {
+        return;
+    }
+
+    const tour = new TourGuideClient({
+        closeButton: false,
+        backdropClass: 'dialogContainer',
+        exitOnClickOutside: false,
+        exitOnEsc: false,
+        nextLabel: 'Next →',
+        prevLabel: '← Back'
+
+    });
+
+    tour.addSteps([
+        {
+            title: 'Welcome to Jellyfin 🎉📺',
+            content: 'This is the home screen. You can access movies and TV shows from here.'
+        },
+        {
+            title: 'Invites ✉️🔗',
+            content: 'You can invite friends to join Jellyfin by copying the invite link here.',
+            target: document.querySelector('#inviteCard')
+        },
+        {
+            title: 'Jellyseerr 🍿🔍',
+            content: 'To request a movie or TV show not available on Jellyfin, you can go to Jellyseerr using this button.',
+            target: document.querySelector('#jellyseerrCard')
+        },
+        {
+            title: 'Watch with friends 👫🎬',
+            content: 'Click the \'SyncPlay\' button to watch synchronized with friends.',
+            target: document.querySelector('.syncButton')
+        },
+        {
+            title: 'All done! 🎉',
+            content: 'You\'ve completed the tour. Enjoy using Jellyfin!'
+        }
+    ]);
+
+    tour.start();
+    tour.onAfterExit(() => {
+        localStorage.setItem('tourCompleted', 'true');
+    });
+};
 class HomeView extends TabbedView {
     constructor(view, params) {
         super(view, params);
@@ -52,6 +104,10 @@ class HomeView extends TabbedView {
                 depends = 'favorites';
         }
 
+        setTimeout(() => {
+            runTour();
+        }, 1500);
+
         const instance = this;
         return import(/* webpackChunkName: "[request]" */ `../controllers/${depends}`).then(({ default: controllerFactory }) => {
             let controller = instance.tabControllers[index];
@@ -60,7 +116,6 @@ class HomeView extends TabbedView {
                 controller = new controllerFactory(instance.view.querySelector(".tabContent[data-index='" + index + "']"), instance.params);
                 instance.tabControllers[index] = controller;
             }
-
             return controller;
         });
     }
