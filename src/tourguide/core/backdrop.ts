@@ -8,6 +8,9 @@ function createTourGuideBackdrop(this : TourGuideClient) {
     this.computeBackdropAttributes();
     // Append to body
     document.body.append(this.backdrop);
+
+    void this.dialog.offsetWidth;
+    this.backdrop.classList.add('dialogBackdropOpened');
 }
 
 /**

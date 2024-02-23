@@ -20,7 +20,7 @@ const runTour = () => {
         closeButton: false,
         backdropClass: 'dialogContainer',
         exitOnClickOutside: false,
-        exitOnEsc: false,
+        exitOnEscape: false,
         nextLabel: 'Next →',
         prevLabel: '← Back'
 
@@ -33,22 +33,22 @@ const runTour = () => {
         },
         {
             title: 'Invites ✉️🔗',
-            content: 'You can invite friends to join Jellyfin by copying the invite link here.',
+            content: 'Copy your personal invite link to share with friends.',
             target: document.querySelector('#inviteCard')
         },
         {
-            title: 'Jellyseerr 🍿🔍',
-            content: 'To request a movie or TV show not available on Jellyfin, you can go to Jellyseerr using this button.',
+            title: 'Jellyseerr 🎬📺🔍',
+            content: 'Movie or TV show not on Jellyfin? <br><br> Request them on Jellyseerr using this button.',
             target: document.querySelector('#jellyseerrCard')
         },
         {
-            title: 'Watch with friends 👫🎬',
+            title: 'Watch with friends 👫🍿',
             content: 'Click the \'SyncPlay\' button to watch synchronized with friends.',
             target: document.querySelector('.syncButton')
         },
         {
-            title: 'All done! 🎉',
-            content: 'You\'ve completed the tour. Enjoy using Jellyfin!'
+            title: 'All done! ✅🏁',
+            content: 'The tour is complete. <br><br> Enjoy using Jellyfin!'
         }
     ]);
 

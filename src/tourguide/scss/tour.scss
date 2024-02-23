@@ -8,6 +8,8 @@ $popperPadding: 25px;
 .tg-backdrop {
   position: absolute;
   align-items: center;
+  animation: fadein 140ms ease-out normal both;
+  // animation-delay: 160ms;
   justify-content: center;
   display: none;
   z-index: 99;
@@ -24,9 +26,10 @@ $popperPadding: 25px;
 }
 .tg-dialog{
   color: #d0cdc8 !important;
+  animation: scaleup 140ms ease-out normal both;
   text-shadow: none;
   border-radius: 12px;
-  animation-delay: 100ms;
+  // animation-delay: 160ms;
   //min-width: 280px;
   min-height: 120px;
   background: #fff;
@@ -207,7 +210,7 @@ $popperPadding: 25px;
   }
   &.tg-dialog-fixed{
     transition: none;
-    animation-delay: 0ms;
+    // animation-delay: 300ms;
   }
   &.animate-position{
     transition: all 300ms;

@@ -42,6 +42,15 @@ async function handleTourStart(this: TourGuideClient, group?: string) {
          * Ensure dialog is rendered in DOM
          */
         await waitForElm('.tg-dialog').then(async ()=>{
+            // add this <div class="dialogBackdrop dialogBackdropOpened"></div>
+            // get the tg-dialog element and apply animation: scaleup 140ms ease-out normal both;
+            // const dialogBackdrop = document.createElement('div');
+            // dialogBackdrop.classList.add('dialogBackdrop');
+            // document.body.appendChild(dialogBackdrop);
+
+            // void dialogBackdrop.offsetWidth;
+            // dialogBackdrop.classList.add('dialogBackdropOpened');
+
             const dialogContainer = document.createElement('div');
             dialogContainer.classList.add('dialogContainer');
             dialogContainer.classList.add('unique-dialog-container');
