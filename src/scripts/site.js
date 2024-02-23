@@ -76,7 +76,7 @@ function loadCoreDictionary() {
     const translations = languages.map(function (language) {
         return {
             lang: language,
-            path: language + '.json'
+            path: 'en-us' + '.json'
         };
     });
     globalize.defaultModule('core');
