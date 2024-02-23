@@ -1,6 +1,6 @@
-import globalize from '../../../scripts/globalize';
 import Dashboard from '../../../scripts/clientUtils';
 import loading from '../../../components/loading/loading';
+import { getUtilsUrl } from '../../../utils/helpers.ts';
 
 /* eslint-disable indent */
 const isValidEmail = (email) => {
@@ -31,7 +31,7 @@ const validate = (view) => {
             const info = view.querySelector('#info').value;
 
             loading.show();
-            fetch('https://utils.jellyfin.nu/api/forgot', {
+            fetch(`${getUtilsUrl()}/api/forgot`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

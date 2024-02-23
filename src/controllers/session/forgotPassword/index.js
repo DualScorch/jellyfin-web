@@ -1,6 +1,7 @@
 import globalize from '../../../scripts/globalize';
 import Dashboard from '../../../scripts/clientUtils';
 import loading from '../../../components/loading/loading';
+import { getUtilsUrl } from '../../../utils/helpers.ts';
 
 /* eslint-disable indent */
     export default function (view) {
@@ -9,7 +10,7 @@ import loading from '../../../components/loading/loading';
 
             const username = view.querySelector('#txtName').value;
             e.preventDefault();
-            fetch('https://utils.jellyfin.nu/api/reset', {
+            fetch(`${getUtilsUrl()}/api/reset`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
