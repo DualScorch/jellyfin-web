@@ -278,7 +278,7 @@ import { getUtilsUrl } from '../../utils/helpers.ts';
                     navigator.clipboard.writeText(
                         `https://${window.location.hostname}/web/index.html?code=${data.code}`
                          ).then(() => {
-                    toast('Copied invite link to clipboard');
+                    toast(`Copied '${window.location.hostname}?code=${data.code}' to clipboard`);
                     }
                     );
                 });
