@@ -87,6 +87,11 @@ import { getUtilsUrl } from '../../../utils/helpers.ts';
             Dashboard.navigate('login.html');
         });
 
+        // make the email always lowercase with eventlistener
+        view.querySelector('#email').addEventListener('input', (e) => {
+            e.target.value = e.target.value.toLowerCase();
+        });
+
         // eslint-disable-next-line compat/compat
         const params = new URL(document.location).searchParams;
         const code = params.get('code');
