@@ -14,7 +14,7 @@ import '../../assets/css/flexstyles.scss';
 
     const transitionEndEventName = dom.whichTransitionEvent();
 
-    function getHtml() {
+    function getHtml(instance) {
         let html = '';
 
         html += '<div class="flex flex-direction-column flex-grow">';
@@ -33,7 +33,7 @@ import '../../assets/css/flexstyles.scss';
         html += '</button>';
 
         html += '<button type="button" is="emby-button" class="raised raised-mini btnHide upNextDialog-button">';
-        html += globalize.translate('Hide');
+        html += instance.realCredits ? 'Show Credits' : 'Hide';
         html += '</button>';
 
         // buttons
@@ -61,6 +61,10 @@ import '../../assets/css/flexstyles.scss';
             globalize.translate('HeaderNextVideoPlayingInValue', timeText);
 
         elem.querySelector('.upNextDialog-nextVideoText').innerHTML = nextVideoText;
+
+        if (secondsRemaining <= 0 && instance.realCredits) {
+            onStartNowClick.bind(instance)();
+        }
     }
 
     function fillItem(item) {
@@ -107,7 +111,7 @@ import '../../assets/css/flexstyles.scss';
     }
 
     function init(instance, options) {
-        options.parent.innerHTML = getHtml();
+        options.parent.innerHTML = getHtml(instance);
 
         options.parent.classList.add('hide');
         options.parent.classList.add('upNextDialog');
@@ -177,6 +181,10 @@ import '../../assets/css/flexstyles.scss';
     }
 
     function getTimeRemainingMs(instance) {
+        if (instance.realCredits) {
+            return instance.countdownEnd - playbackManager.currentTime(instance.options.player);
+        }
+
         const options = instance.options;
         if (options) {
             const runtimeTicks = playbackManager.duration(options.player);
@@ -187,7 +195,6 @@ import '../../assets/css/flexstyles.scss';
                 return Math.round(timeRemainingTicks / 10000);
             }
         }
-
         return 0;
     }
 
@@ -207,6 +214,9 @@ import '../../assets/css/flexstyles.scss';
 class UpNextDialog {
     constructor(options) {
         this.options = options;
+
+        this.realCredits = options.realCredits;
+        this.countdownEnd = Math.min(playbackManager.duration(options.player), playbackManager.currentTime(options.player) + 10000);
 
         init(this, options);
     }

@@ -464,18 +464,18 @@ import { appRouter } from '../../../components/appRouter';
                 updatePlaylist();
                 enableStopOnBack(true);
                 updatePlaybackRate(player);
-                getIntroTimestamps(state.NowPlayingItem);
+                getSkippableSegments(state.NowPlayingItem);
             }
         }
 
-        function getIntroTimestamps(item) {
+        function getSkippableSegments(item) {
             const apiClient = ServerConnections.getApiClient(item);
             const address = apiClient.serverAddress();
 
-            const url = `${address}/Episode/${item.Id}/IntroTimestamps`;
+            const url = `${address}/Episode/${item.Id}/IntroSkipperSegments`;
             const reqInit = {
                 headers: {
-                    "Authorization": `MediaBrowser Token=${apiClient.accessToken()}`
+                    'Authorization': `MediaBrowser Token=${apiClient.accessToken()}`
                 }
             };
 
@@ -485,8 +485,13 @@ import { appRouter } from '../../../components/appRouter';
                 }
 
                 return r.json();
-            }).then(intro => {
-                tvIntro = intro;
+            }).then(res => {
+                if (res.Introduction) {
+                    tvIntro = res.Introduction;
+                }
+                if (res.Credits) {
+                    tvCredits = res.Credits;
+                }
             });
         }
 
@@ -622,17 +627,17 @@ import { appRouter } from '../../../components/appRouter';
                 return;
             }
 
-            const player = this
+            const player = this;
             const seconds = playbackManager.currentTime(player) / 1000;
-            const skipIntro = document.querySelector(".skipIntro");
+            const skipIntro = document.querySelector('.skipIntro');
 
             // If the skip prompt should be shown, show it.
             if ((seconds >= tvIntro.ShowSkipPromptAt && seconds < tvIntro.HideSkipPromptAt) || (seconds >= tvIntro.IntroStart && seconds < tvIntro.IntroEnd && currentVisibleMenu === 'osd')) {
-                skipIntro.classList.remove("hide");
+                skipIntro.classList.remove('hide');
                 return;
             }
 
-            skipIntro.classList.add("hide");
+            skipIntro.classList.add('hide');
         }
 
         function showComingUpNextIfNeeded(player, currentItem, currentTimeTicks, runtimeTicks) {
@@ -641,8 +646,13 @@ import { appRouter } from '../../../components/appRouter';
                 const showAtTicks = runtimeTicks - 1e3 * showAtSecondsLeft * 1e4;
                 const timeRemainingTicks = runtimeTicks - currentTimeTicks;
 
-                if (currentTimeTicks >= showAtTicks && runtimeTicks >= 6e9 && timeRemainingTicks >= 2e8) {
-                    showComingUpNext(player);
+                if (currentTimeTicks >= showAtTicks && runtimeTicks >= 6e9 && timeRemainingTicks >= 2e8 && !tvCredits) {
+                    showComingUpNext(player, false);
+                }
+
+                const TV_CREDIT_OFFSET = -3;
+                if (tvCredits && tvCredits.Valid && currentTimeTicks >= (tvCredits.IntroStart + TV_CREDIT_OFFSET) * 10_000_000) {
+                    showComingUpNext(player, true);
                 }
             }
         }
@@ -653,7 +663,7 @@ import { appRouter } from '../../../components/appRouter';
             }
         }
 
-        function showComingUpNext(player) {
+        function showComingUpNext(player, realCredits) {
             import('../../../components/upnextdialog/upnextdialog').then(({default: UpNextDialog}) => {
                 if (!(currentVisibleMenu || currentUpNextDialog)) {
                     currentVisibleMenu = 'upnext';
@@ -662,7 +672,8 @@ import { appRouter } from '../../../components/appRouter';
                         currentUpNextDialog = new UpNextDialog({
                             parent: view.querySelector('.upNextContainer'),
                             player: player,
-                            nextItem: nextItem
+                            nextItem: nextItem,
+                            realCredits
                         });
                         Events.on(currentUpNextDialog, 'hide', onUpNextHidden);
                     }, onUpNextHidden);
@@ -1028,6 +1039,13 @@ import { appRouter } from '../../../components/appRouter';
 
                 return opt;
             });
+
+            // add a search button to menu items
+            menuItems.push({
+                name: globalize.translate('Search'),
+                id: -2
+            });
+
             const positionTo = this;
 
             import('../../../components/actionSheet/actionSheet').then(({default: actionsheet}) => {
@@ -1038,7 +1056,14 @@ import { appRouter } from '../../../components/appRouter';
                 }).then(function (id) {
                     const index = parseInt(id);
 
-                    if (index !== currentIndex) {
+                    if (index === -2) {
+                        console.log('search');
+                        console.log(currentItem);
+                        console.log(currentPlayer);
+                        import('../subtitledownloader/subtitledownloader').then(({default: subtitleEditor}) => {
+                            subtitleEditor.show(currentItem.Id, currentItem.ServerId).then((e) => console.log(e));
+                        });
+                    } else if (index !== currentIndex) {
                         playbackManager.setSubtitleStreamIndex(index, player);
                     }
 
@@ -1368,6 +1393,7 @@ import { appRouter } from '../../../components/appRouter';
         let playbackStartTimeTicks = 0;
         let subtitleSyncOverlay;
         let tvIntro;
+        let tvCredits;
         const nowPlayingVolumeSlider = view.querySelector('.osdVolumeSlider');
         const nowPlayingVolumeSliderContainer = view.querySelector('.osdVolumeSliderContainer');
         const nowPlayingPositionSlider = view.querySelector('.osdPositionSlider');
