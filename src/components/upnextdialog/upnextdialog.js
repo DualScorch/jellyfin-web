@@ -32,7 +32,8 @@ import '../../assets/css/flexstyles.scss';
         html += globalize.translate('HeaderStartNow');
         html += '</button>';
 
-        html += '<button type="button" is="emby-button" class="raised raised-mini btnHide upNextDialog-button">';
+        // set color to black and background-color to white
+        html += '<button type="button" is="emby-button" class="raised raised-mini btnHide upNextDialog-button" style="background-color:#4d4d4d !important;">';
         html += instance.realCredits ? 'Show Credits' : 'Hide';
         html += '</button>';
 

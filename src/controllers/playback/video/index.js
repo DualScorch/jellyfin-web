@@ -468,6 +468,13 @@ import { appRouter } from '../../../components/appRouter';
             }
         }
 
+        // function secsToHHMMSS(secs) {
+        //     const hours = Math.floor(secs / 3600);
+        //     const minutes = Math.floor(secs % 3600 / 60);
+        //     const seconds = Math.floor(secs % 3600 % 60);
+        //     return `${hours}:${minutes}:${seconds}`;
+        // }
+
         function getSkippableSegments(item) {
             const apiClient = ServerConnections.getApiClient(item);
             const address = apiClient.serverAddress();
@@ -488,9 +495,11 @@ import { appRouter } from '../../../components/appRouter';
             }).then(res => {
                 if (res.Introduction) {
                     tvIntro = res.Introduction;
+                    // console.log(`Intro starts at ${secsToHHMMSS(tvIntro.IntroStart)} and ends at ${secsToHHMMSS(tvIntro.IntroEnd)}`);
                 }
                 if (res.Credits) {
                     tvCredits = res.Credits;
+                    // console.log(`Credits start at ${secsToHHMMSS(tvCredits.IntroStart)} and ends at ${secsToHHMMSS(tvCredits.IntroEnd)}`);
                 }
             });
         }
@@ -631,13 +640,39 @@ import { appRouter } from '../../../components/appRouter';
             const seconds = playbackManager.currentTime(player) / 1000;
             const skipIntro = document.querySelector('.skipIntro');
 
-            // If the skip prompt should be shown, show it.
+            if (!skipIntro) return;
+
             if ((seconds >= tvIntro.ShowSkipPromptAt && seconds < tvIntro.HideSkipPromptAt) || (seconds >= tvIntro.IntroStart && seconds < tvIntro.IntroEnd && currentVisibleMenu === 'osd')) {
+                const isVisible = !skipIntro.classList.contains('hide');
                 skipIntro.classList.remove('hide');
+
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        skipIntro.style.opacity = '1';
+                    });
+                });
+                if (!isVisible) {
+                    if (layoutManager.tv) {
+                        setTimeout(function () {
+                            focusManager.focus(skipIntro.querySelector('.btnSkipIntro'));
+                        }, 50);
+                    }
+                }
+
+                skipIntroShown = true;
                 return;
             }
 
-            skipIntro.classList.add('hide');
+            if (skipIntro.classList.contains('hide')) return;
+
+            skipIntro.style.opacity = '0';
+            skipIntro.addEventListener('transitionend', function () {
+                if (skipIntro.style.opacity === '0') { // Ensure this only happens when fading out
+                    skipIntro.classList.add('hide');
+                }
+    }, {
+        once: true
+    });
         }
 
         function showComingUpNextIfNeeded(player, currentItem, currentTimeTicks, runtimeTicks) {
@@ -1547,6 +1582,7 @@ import { appRouter } from '../../../components/appRouter';
             if (dom.parentWithClass(e.target, ['btnSkipIntro'])) {
                 return;
             }
+
             if (dom.parentWithClass(e.target, ['videoOsdBottom', 'upNextContainer'])) {
                 return void showOsd();
             }
