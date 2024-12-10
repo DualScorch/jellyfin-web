@@ -105,12 +105,12 @@ const getInviteCard = (userId: string) => {
                 <div class="cardPadder
                 cardPadder-overflowBackdrop lazy-hidden-children">
 
-                    <button  class="cardImageContainer coveredImage cardContent " aria-label="Invite Codes" style="background-image: url('https://utils.jellyfin.nu/api/image?userId=${userId}&tvLayout=${layoutManager.tv}'); opacity: 1; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 4px; color: #fff;"></button><div class="cardOverlayContainer ">
+                    <button  class="cardImageContainer coveredImage cardContent " aria-label="Invite Code" style="background-image: url('https://utils.jellyfin.nu/api/image?userId=${userId}&tvLayout=${layoutManager.tv}'); opacity: 1; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 4px; color: #fff;"></button><div class="cardOverlayContainer ">
                         <div class="cardOverlayButton-tr flex">Hej</div>
                     </div>
                 </div>
                 <div class="cardText cardTextCentered cardText-first">
-                    <button type="button" class="itemAction textActionButton" title="Invite Codes" style="color: #fff;">Invite Codes</button>
+                    <button type="button" class="itemAction textActionButton" title="Invite Code" style="color: #fff;">Invite Codes</button>
                 </div>
             </div>
         </div>
