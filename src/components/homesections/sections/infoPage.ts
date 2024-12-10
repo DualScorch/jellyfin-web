@@ -120,7 +120,7 @@ const getInviteCard = (userId: string) => {
 const getJellyseerrCard = () => {
     const randomNr = Math.round(Math.random() * 5);
     return `<a href="https://mer.jellyfin.nu/">
-    <div class="card overflowBackdropCard card-hoverable card-withuserdata">
+    <div id="jellyseerrCard" class="card overflowBackdropCard card-hoverable card-withuserdata" >
         <div class="cardBox cardBox-bottompadded">
             <div class="cardScalable">
                 <div class="cardPadder
