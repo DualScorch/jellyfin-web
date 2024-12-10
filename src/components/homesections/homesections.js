@@ -74,6 +74,15 @@ export function loadSections(elem, apiClient, user, userSettings) {
 
                 const promises = [];
                 const sections = getAllSectionsToShow(userSettings, userSectionCount);
+
+                if (layoutManager.tv) {
+                    const index = sections.indexOf(HomeSectionType.InfoPage);
+                    if (index !== -1) {
+                        sections.splice(index, 1);
+                    }
+                }
+
+
                 for (let i = 0; i < sections.length; i++) {
                     promises.push(loadSection(elem, apiClient, user, userSettings, userViews, sections, i));
                 }
