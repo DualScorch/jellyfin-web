@@ -1,6 +1,7 @@
 import globalize from 'lib/globalize';
 import Dashboard from 'utils/dashboard';
 import loading from '../../../components/loading/loading';
+import { getUrl } from '../../../utils/jellyadmin';
 /* eslint-disable indent */
 const isValidEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -25,7 +26,7 @@ const validate = (view) => {
             const email = view.querySelector('#email').value;
             const info = view.querySelector('#info').value;
             loading.show();
-            fetch('https://utils.jellyfin.nu/api/forgot', {
+            fetch(`${getUrl()}/api/forgot`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -42,6 +43,12 @@ const validate = (view) => {
                     callback: function () {
                         Dashboard.navigate('login.html');
                     }
+                });
+            }).catch(err => {
+                loading.hide();
+                Dashboard.alert({
+                    message: err,
+                    title: 'Error'
                 });
             });
             return false;

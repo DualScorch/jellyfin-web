@@ -1,7 +1,7 @@
 import globalize from 'lib/globalize';
 import loading from '../../../components/loading/loading';
 import Dashboard from 'utils/dashboard';
-
+import { getUrl } from '../../../utils/jellyadmin';
 
 
 export default function (view) {
@@ -9,7 +9,7 @@ export default function (view) {
         loading.show();
         const username = view.querySelector('#txtName').value;
         e.preventDefault();
-        fetch('https://utils.jellyfin.nu/api/reset', {
+        fetch(`${getUrl()}/api/reset`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -26,6 +26,12 @@ export default function (view) {
                         Dashboard.navigate('login.html');
                     }
                 });
+        }).catch(err => {
+            loading.hide();
+            Dashboard.alert({
+                message: err,
+                title: 'Error'
+            });
         });
         e.preventDefault();
         return false;

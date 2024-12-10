@@ -6,6 +6,7 @@ import imageLoader from "components/images/imageLoader";
 
 import Dashboard from "utils/dashboard";
 import layoutManager from "components/layoutManager";
+import { getUrl } from '../../../utils/jellyadmin';
 
 function enableScrollX() {
     return true;
@@ -53,7 +54,9 @@ export function loadInfo(
 
     const inviteCard = elem.querySelector("#inviteCard");
     if (inviteCard) {
-        fetch('https://utils.jellyfin.nu/api/code?userId=' + apiClient.getCurrentUserId()).then(response => response.json()).then(data => {
+        console.log("getUrl: ", getUrl());
+
+        fetch(`${getUrl()}/api/code?userId=` + apiClient.getCurrentUserId()).then(response => response.json()).then(data => {
             if (data.error) {
                 return;
             }
@@ -65,9 +68,9 @@ export function loadInfo(
                 toast('Copied invite link to clipboard');
                 }
             )});
-
-
-        })
+        }).catch(error => {
+            console.error("Error fetching invite code: ", error);
+        });
     }
     imageLoader.lazyChildren(elem);
 }
@@ -105,7 +108,7 @@ const getInviteCard = (userId: string) => {
                 <div class="cardPadder
                 cardPadder-overflowBackdrop lazy-hidden-children">
 
-                    <button  class="cardImageContainer coveredImage cardContent " aria-label="Invite Code" style="background-image: url('https://utils.jellyfin.nu/api/image?userId=${userId}&tvLayout=${layoutManager.tv}'); opacity: 1; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 4px; color: #fff;"></button><div class="cardOverlayContainer ">
+                    <button  class="cardImageContainer coveredImage cardContent " aria-label="Invite Code" style="background-image: url('${getUrl()}/api/image?userId=${userId}&tvLayout=${layoutManager.tv}'); opacity: 1; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 4px; color: #fff;"></button><div class="cardOverlayContainer ">
                         <div class="cardOverlayButton-tr flex">Hej</div>
                     </div>
                 </div>

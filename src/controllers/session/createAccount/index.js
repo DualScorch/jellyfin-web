@@ -1,6 +1,7 @@
 import loading from '../../../components/loading/loading';
 import Dashboard from 'utils/dashboard';
 import { appRouter } from 'components/router/appRouter';
+import { getUrl } from '../../../utils/jellyadmin';
 
 /* eslint-disable indent */
     const isValidEmail = (email) => {
@@ -41,7 +42,7 @@ import { appRouter } from 'components/router/appRouter';
             const password = view.querySelector('#password').value;
             const code = view.querySelector('#code').value;
             loading.show();
-            fetch('https://utils.jellyfin.nu/api/create', {
+            fetch(`${getUrl()}/api/create`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -55,7 +56,7 @@ import { appRouter } from 'components/router/appRouter';
                 loading.hide();
                 if (response.status === 200) {
                     Dashboard.alert({
-                        message: 'Before you can log in, you need to verify your email address. Please check your email for a verification link. It can take up to 10 minutes to arrive. <br><br> Check your spam folder!',
+                        message: 'Email must be verified before login! <br><br>Email can take up to 10 minutes to arrive. <br><br> CHECK SPAM FOLDER',
                         title: 'Success',
                         callback: () => {
                             removeCode();
@@ -70,6 +71,12 @@ import { appRouter } from 'components/router/appRouter';
                     });
                 });
                 }
+            }).catch(err => {
+                loading.hide();
+                Dashboard.alert({
+                    message: err,
+                    title: 'Error'
+                });
             });
             return false;
         }
