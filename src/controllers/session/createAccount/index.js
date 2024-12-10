@@ -55,7 +55,7 @@ import { appRouter } from 'components/router/appRouter';
                 loading.hide();
                 if (response.status === 200) {
                     Dashboard.alert({
-                        message: 'Before you can log in, you need to verify your email address. Please check your email for a verification link. It can take up to 10 minutes to arrive.',
+                        message: 'Before you can log in, you need to verify your email address. Please check your email for a verification link. It can take up to 10 minutes to arrive. <br><br> Check your spam folder!',
                         title: 'Success',
                         callback: () => {
                             removeCode();
@@ -79,15 +79,21 @@ import { appRouter } from 'components/router/appRouter';
             await appRouter.goHome();
         });
 
+
+
         const params = new URL(document.location).searchParams;
         const code = getCodeFromHash(document.location.hash);
         if (code) {
             view.querySelector('#code').value = code;
         }
 
+
+
+        view.querySelector('#email').addEventListener('input', (e) => {
+            e.target.value = e.target.value.toLowerCase();
+        });
+
         loading.hide();
-
-
         // eslint-disable-next-line compat/compat
 
     }

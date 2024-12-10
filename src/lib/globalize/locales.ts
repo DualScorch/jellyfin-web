@@ -67,7 +67,7 @@ const languages = [
 
 const locales = languages.map(lang => ({
     lang,
-    path: `${lang}.json`
+    path: `en-us.json`
 }));
 
 export default locales;
