@@ -10,12 +10,14 @@ export enum HomeSectionType {
     LatestMedia = 'latestmedia',
     NextUp = 'nextup',
     LiveTv = 'livetv',
-    ResumeBook = 'resumebook'
+    ResumeBook = 'resumebook',
+    InfoPage = 'infopage'
 }
 
 // NOTE: This needs to match the server defaults
 // https://github.com/jellyfin/jellyfin/blob/1b4394199a2f9883cd601bdb8c9d66015397aa52/Jellyfin.Api/Controllers/DisplayPreferencesController.cs#L120
 export const DEFAULT_SECTIONS: HomeSectionType[] = [
+    HomeSectionType.InfoPage,
     HomeSectionType.SmallLibraryTiles,
     HomeSectionType.Resume,
     HomeSectionType.ResumeAudio,

@@ -13,6 +13,7 @@ import { loadLiveTV } from './sections/liveTv';
 import { loadNextUp } from './sections/nextUp';
 import { loadRecentlyAdded } from './sections/recentlyAdded';
 import { loadResume } from './sections/resume';
+import { loadInfo } from './sections/infoPage';
 
 import 'elements/emby-button/paper-icon-button-light';
 import 'elements/emby-itemscontainer/emby-itemscontainer';
@@ -162,6 +163,8 @@ function loadSection(page, apiClient, user, userSettings, userViews, allSections
             break;
         case HomeSectionType.Resume:
             return loadResume(elem, apiClient, 'HeaderContinueWatching', 'Video', userSettings, options);
+        case HomeSectionType.InfoPage:
+            return loadInfo(elem, apiClient, userViews);
         case HomeSectionType.ResumeAudio:
             return loadResume(elem, apiClient, 'HeaderContinueListening', 'Audio', userSettings, options);
         case HomeSectionType.ResumeBook:
