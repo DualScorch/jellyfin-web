@@ -1,5 +1,6 @@
 import loading from '../../../components/loading/loading';
 import Dashboard from 'utils/dashboard';
+import { appRouter } from 'components/router/appRouter';
 
 /* eslint-disable indent */
     const isValidEmail = (email) => {
@@ -73,5 +74,20 @@ import Dashboard from 'utils/dashboard';
             return false;
         }
         view.querySelector('form').addEventListener('submit', onSubmit);
+        view.querySelector('.btnCancel').addEventListener('click', async function (e) {
+            console.log('cancel');
+            const url = new URL(document.location);
+            url.searchParams.delete('code');
+            window.history.replaceState({}, document.title, url);
+            await appRouter.goHome();
+        });
+
+
+        // eslint-disable-next-line compat/compat
+        const params = new URL(document.location).searchParams;
+        const code = params.get('code');
+        if (code) {
+            view.querySelector('#code').value = code;
+        }
     }
 /* eslint-enable indent */
