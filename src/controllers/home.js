@@ -5,57 +5,63 @@ import '../elements/emby-button/emby-button';
 import '../elements/emby-scroller/emby-scroller';
 import LibraryMenu from '../scripts/libraryMenu';
 
-
-import { TourGuideClient } from '../tourguide/Tour.ts';
 import '../tourguide/scss/tour.scss';
-// import layoutManager from '../components/layoutManager';
 
-const runTour = () => {
+const runTour = async () => {
     const tourCompleted = localStorage.getItem('tourCompleted');
     const hostname = window.location.hostname;
     if (tourCompleted === 'true' || hostname !== 'jellyfin.nu' || layoutManager.tv === true) {
         return;
     }
-    const tour = new TourGuideClient({
-        closeButton: false,
-        backdropClass: 'dialogContainer',
-        exitOnClickOutside: false,
-        exitOnEscape: false,
-        nextLabel: 'Next →',
-        prevLabel: '← Back'
 
-    });
+    try {
+        const { TourGuideClient } = await import('../tourguide/Tour.ts');
+        const tour = new TourGuideClient({
+            closeButton: false,
+            backdropClass: 'dialogContainer',
+            exitOnClickOutside: false,
+            exitOnEscape: false,
+            nextLabel: 'Next →',
+            prevLabel: '← Back'
 
-    tour.addSteps([
-        {
-            title: 'Welcome to Jellyfin 🎉📺',
-            content: 'This is the home screen. You can access movies and TV shows from here.'
-        },
-        {
-            title: 'Invites ✉️🔗',
-            content: 'Copy your personal invite link to share with friends.',
-            target: document.querySelector('#inviteCard')
-        },
-        {
-            title: 'Jellyseerr 🎬📺🔍',
-            content: 'Movie or TV show not on Jellyfin? <br><br> Request them on Jellyseerr using this button.',
-            target: document.querySelector('#jellyseerrCard')
-        },
-        {
-            title: 'Watch with friends 👫🍿',
-            content: 'Click the \'SyncPlay\' button to watch synchronized with friends.',
-            target: document.querySelector('.syncButton')
-        },
-        {
-            title: 'All done! ✅🏁',
-            content: 'The tour is complete. <br><br> Enjoy using Jellyfin!'
-        }
-    ]);
+        });
 
-    tour.start();
-    tour.onAfterExit(() => {
-        localStorage.setItem('tourCompleted', 'true');
-    });
+        tour.addSteps([
+            {
+                title: 'Welcome to Jellyfin 🎉📺',
+                content: 'This is the home screen. You can access movies and TV shows from here.'
+            },
+            {
+                title: 'Invites ✉️🔗',
+                content: 'Copy your personal invite link to share with friends.',
+                target: document.querySelector('#inviteCard')
+            },
+            {
+                title: 'Jellyseerr 🎬📺🔍',
+                content: 'Movie or TV show not on Jellyfin? <br><br> Request them on Jellyseerr using this button.',
+                target: document.querySelector('#jellyseerrCard')
+            },
+            {
+                title: 'Watch with friends 👫🍿',
+                content: 'Click the \'SyncPlay\' button to watch synchronized with friends.',
+                target: document.querySelector('.syncButton')
+            },
+            {
+                title: 'All done! ✅🏁',
+                content: 'The tour is complete. <br><br> Enjoy using Jellyfin!'
+            }
+        ]);
+
+        tour.start();
+        tour.onAfterExit(() => {
+            localStorage.setItem('tourCompleted', 'true');
+        });
+
+    } catch (e) {
+        console.error('TourGuideClient not found');
+        return;
+    }
+
 };
 class HomeView extends TabbedView {
     setTitle() {
@@ -100,17 +106,17 @@ class HomeView extends TabbedView {
                 depends = 'favorites';
         }
 
-        setTimeout(async() => {
+        setTimeout(async () => {
             let count = 0;
-            let interval = setInterval(() => {
+            let interval = setInterval(async() => {
                 console.log('checking for tour dependencies');
                 let inviteCard = document.querySelector('#inviteCard');
                 let jellyseerrCard = document.querySelector('#jellyseerrCard');
                 let syncButton = document.querySelector('.syncButton');
 
                 if (inviteCard && jellyseerrCard && syncButton) {
-                    runTour();
                     clearInterval(interval);
+                    await runTour();
                 }
                 if (count > 500) {
                     clearInterval(interval);
