@@ -23,6 +23,13 @@ export const LEGACY_PUBLIC_ROUTES: LegacyRoute[] = [
         }
     },
     {
+        'path': 'createAccount.html',
+        'pageProps': {
+            'controller': 'session/createAccount/index',
+            'view': 'session/createAccount/index.html'
+        }
+    },
+    {
         path: 'forgotpassword.html',
         pageProps: {
             controller: 'session/forgotPassword/index',
