@@ -13,9 +13,9 @@ import '../tourguide/scss/tour.scss';
 const runTour = () => {
     const tourCompleted = localStorage.getItem('tourCompleted');
     const hostname = window.location.hostname;
-    // if (tourCompleted === 'true' || hostname !== 'jellyfin.nu' || layoutManager.tv === true) {
-    //     return;
-    // }
+    if (tourCompleted === 'true' || hostname !== 'jellyfin.nu' || layoutManager.tv === true) {
+        return;
+    }
     const tour = new TourGuideClient({
         closeButton: false,
         backdropClass: 'dialogContainer',
