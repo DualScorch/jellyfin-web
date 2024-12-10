@@ -323,6 +323,7 @@ function refreshLibraryInfoInDrawer(user) {
 
     // placeholder for custom menu links
     html += '<div class="customMenuOptions"></div>';
+    html +='<a is="emby-linkbutton"  class="navMenuOption lnkMediaFolder" href="https://mer.jellyfin.nu" target="_blank"><i class="md-icon flex navMenuOptionIcon" style="margin-right: 24.284px;"><img style="width: 20.23px; height: 20px;" src="https://github.com/Fallenbagel/jellyseerr/blob/main/public/favicon-32x32.png?raw=true"></i><span class="navMenuOptionText">'+ globalize.translate('Requests') + "</span></a>";
 
     // libraries are added here
     html += '<div class="libraryMenuOptions"></div>';
