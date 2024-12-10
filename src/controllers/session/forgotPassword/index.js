@@ -32,5 +32,9 @@ export default function (view) {
     }
 
     view.querySelector('form').addEventListener('submit', onSubmit);
+    view.querySelector('.btnForgotUser').addEventListener('click', function (e) {
+        e.preventDefault();
+        Dashboard.navigate('forgotuser.html');
+    });
 }
 
