@@ -40,7 +40,6 @@ import { appRouter } from 'components/router/appRouter';
             const email = view.querySelector('#email').value;
             const password = view.querySelector('#password').value;
             const code = view.querySelector('#code').value;
-            console.log('fetching');
             loading.show();
             fetch('https://utils.jellyfin.nu/api/create', {
                 method: 'POST',
@@ -59,6 +58,7 @@ import { appRouter } from 'components/router/appRouter';
                         message: 'Before you can log in, you need to verify your email address. Please check your email for a verification link. It can take up to 10 minutes to arrive.',
                         title: 'Success',
                         callback: () => {
+                            removeCode();
                             Dashboard.navigate('login.html');
                         }
                     });
@@ -75,19 +75,40 @@ import { appRouter } from 'components/router/appRouter';
         }
         view.querySelector('form').addEventListener('submit', onSubmit);
         view.querySelector('.btnCancel').addEventListener('click', async function (e) {
-            console.log('cancel');
-            const url = new URL(document.location);
-            url.searchParams.delete('code');
-            window.history.replaceState({}, document.title, url);
+            removeCode();
             await appRouter.goHome();
         });
 
-
-        // eslint-disable-next-line compat/compat
         const params = new URL(document.location).searchParams;
-        const code = params.get('code');
+        const code = getCodeFromHash(document.location.hash);
         if (code) {
             view.querySelector('#code').value = code;
         }
+
+        loading.hide();
+
+
+        // eslint-disable-next-line compat/compat
+
     }
+
+    const removeCode = () => {
+        const url = new URL(document.location);
+        url.searchParams.delete('code');
+        window.history.replaceState({}, document.title, url);
+    };
 /* eslint-enable indent */
+
+
+const getCodeFromHash = (hash) => {
+    if (!hash.includes('?')) return null; // Ensure there's a query string in the hash
+
+    try {
+      const queryPart = hash.split('?')[1];
+      const hashParams = new URLSearchParams(queryPart);
+      return hashParams.get('code');
+    } catch (error) {
+      console.error('Error parsing hash:', error);
+      return null;
+    }
+  };

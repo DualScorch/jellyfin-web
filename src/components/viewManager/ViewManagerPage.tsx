@@ -76,13 +76,6 @@ const ViewManagerPage: FunctionComponent<ViewManagerPageProps> = ({
                 }
             };
 
-            let params = new URLSearchParams(document.location.search);
-            if (location.pathname.includes("/login.html") && params.has("code")) {
-                console.debug('[ViewManagerPage] loading view [%s]', "session/createAccount/index");
-                viewOptions.url.replace("login.html", "createAccount.html");
-                return loadView("session/createAccount/index", "session/createAccount/index.html", viewOptions);
-            }
-
             if (navigationType !== Action.Pop) {
                 console.debug('[ViewManagerPage] loading view [%s]', view);
                 return loadView(controller, view, viewOptions);

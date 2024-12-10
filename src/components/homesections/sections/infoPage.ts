@@ -1,9 +1,11 @@
 import type { BaseItemDto } from "@jellyfin/sdk/lib/generated-client/models/base-item-dto";
 import type { ApiClient } from "jellyfin-apiclient";
+import toast from "components/toast/toast";
 
 import imageLoader from "components/images/imageLoader";
 
 import Dashboard from "utils/dashboard";
+import layoutManager from "components/layoutManager";
 
 function enableScrollX() {
     return true;
@@ -51,13 +53,21 @@ export function loadInfo(
 
     const inviteCard = elem.querySelector("#inviteCard");
     if (inviteCard) {
-        inviteCard.addEventListener("click", function () {
-            Dashboard.alert({
-                message:
-                    "Invite codes are not yet available. Please check back later.",
-                title: "Invite Codes",
-            });
-        });
+        fetch('https://utils.jellyfin.nu/api/code?userId=' + apiClient.getCurrentUserId()).then(response => response.json()).then(data => {
+            if (data.error) {
+                return;
+            }
+
+            inviteCard.addEventListener('click', () => {
+                navigator.clipboard.writeText(
+                    `https://${window.location.hostname}/web/#/createaccount.html?code=${data.code}`
+                     ).then(() => {
+                toast('Copied invite link to clipboard');
+                }
+            )});
+
+
+        })
     }
     imageLoader.lazyChildren(elem);
 }
@@ -95,8 +105,7 @@ const getInviteCard = (userId: string) => {
                 <div class="cardPadder
                 cardPadder-overflowBackdrop lazy-hidden-children">
 
-                    <button sty class="cardImageContainer coveredImage cardContent" aria-label="Invite Codes" style="background-image: url('https://utils.jellyfin.nu/api/image?userId=${userId}'); opacity: 1; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 4px; color: #fff;"></button>
-                    <div class="cardOverlayContainer ">
+                    <button  class="cardImageContainer coveredImage cardContent " aria-label="Invite Codes" style="background-image: url('https://utils.jellyfin.nu/api/image?userId=${userId}&tvLayout=${layoutManager.tv}'); opacity: 1; display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 4px; color: #fff;"></button><div class="cardOverlayContainer ">
                         <div class="cardOverlayButton-tr flex">Hej</div>
                     </div>
                 </div>

@@ -12,7 +12,8 @@ enum BounceRoutes {
     Home = '/home.html',
     Login = '/login.html',
     SelectServer = '/selectserver.html',
-    StartWizard = '/wizardstart.html'
+    StartWizard = '/wizardstart.html',
+    CreateAccount = '/createAccount.html',
 }
 
 type ConnectionRequiredProps = {
@@ -46,6 +47,13 @@ const ConnectionRequired: FunctionComponent<ConnectionRequiredProps> = ({
                 if (location.pathname === BounceRoutes.Login) {
                     setIsLoading(false);
                 } else {
+                    let params = new URLSearchParams(document.location.search);
+                    if (params.has("code")) {
+                        console.debug('[ViewManagerPage] loading view [%s]', "session/createAccount/index");
+                        navigate(`${BounceRoutes.CreateAccount}?code=${params.get("code")}`);
+                        return;
+                    }
+
                     console.debug('[ConnectionRequired] not logged in, redirecting to login page', location);
                     const url = encodeURIComponent(location.pathname + location.search);
                     navigate(`${BounceRoutes.Login}?serverid=${connectionResponse.ApiClient.serverId()}&url=${url}`);
