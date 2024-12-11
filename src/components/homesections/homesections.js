@@ -29,8 +29,9 @@ export function getDefaultSection(index) {
 
 function getAllSectionsToShow(userSettings, sectionCount) {
     const sections = [];
+
     for (let i = 0, length = sectionCount; i < length; i++) {
-        let section = userSettings.get('homesection' + i) || getDefaultSection(i);
+        let section = getDefaultSection(i);
         if (section === 'folders') {
             section = getDefaultSection(0);
         }
@@ -81,7 +82,6 @@ export function loadSections(elem, apiClient, user, userSettings) {
                         sections.splice(index, 1);
                     }
                 }
-
 
                 for (let i = 0; i < sections.length; i++) {
                     promises.push(loadSection(elem, apiClient, user, userSettings, userViews, sections, i));
