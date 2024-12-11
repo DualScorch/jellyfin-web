@@ -4,6 +4,7 @@ import '../elements/emby-tabs/emby-tabs';
 import '../elements/emby-button/emby-button';
 import '../elements/emby-scroller/emby-scroller';
 import LibraryMenu from '../scripts/libraryMenu';
+import layoutManager from 'components/layoutManager';
 
 import '../tourguide/scss/tour.scss';
 
@@ -56,12 +57,10 @@ const runTour = async () => {
         tour.onAfterExit(() => {
             localStorage.setItem('tourCompleted', 'true');
         });
-
     } catch (e) {
         console.error('TourGuideClient not found');
         return;
     }
-
 };
 class HomeView extends TabbedView {
     setTitle() {
@@ -108,11 +107,11 @@ class HomeView extends TabbedView {
 
         setTimeout(async () => {
             let count = 0;
-            let interval = setInterval(async() => {
+            const interval = setInterval(async() => {
                 console.log('checking for tour dependencies');
-                let inviteCard = document.querySelector('#inviteCard');
-                let jellyseerrCard = document.querySelector('#jellyseerrCard');
-                let syncButton = document.querySelector('.syncButton');
+                const inviteCard = document.querySelector('#inviteCard');
+                const jellyseerrCard = document.querySelector('#jellyseerrCard');
+                const syncButton = document.querySelector('.syncButton');
 
                 if (inviteCard && jellyseerrCard && syncButton) {
                     clearInterval(interval);
@@ -122,10 +121,7 @@ class HomeView extends TabbedView {
                     clearInterval(interval);
                 }
                 count++;
-
-
             }, 20);
-
         }, 1);
 
         const instance = this;
